@@ -12,9 +12,25 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return inertia('Admin/Rooms/RoomList');
+        $search = $request->input('search');
+
+        $rooms = Room::query()
+            ->with('roomImages')
+            ->when($search, function ($query, $search) {
+                $query->where('room_type', 'like', "%{$search}%")
+                    ->orWhere('room_number', 'like', "%{$search}%")
+                    ->orWhere('capacity', 'like', "%{$search}%")
+                    ->orWhere('price', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(9);
+
+        return inertia('Admin/Rooms/RoomList', [
+            'rooms' => $rooms,
+            'search' => $search
+        ]);
     }
 
     /**
@@ -62,7 +78,7 @@ class RoomController extends Controller
             Log::info('No images found in request');
         }
 
-        return back()->with('success', 'Successfully added the room with images.');
+        return redirect('/room')->with('success', 'Successfully added the room with images.');
     }
 
     /**
