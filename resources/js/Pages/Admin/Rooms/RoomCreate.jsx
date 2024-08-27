@@ -1,9 +1,9 @@
 import { useForm } from "@inertiajs/react";
-import TextInput from '@/Components/TextInput';
-import NumberInput from '@/Components/NumberInput';
-import TextArea from '@/Components/TextArea';
-import SelectInput from '@/Components/SelectInput';
-import Button from '@/Components/Button';
+import TextInput from "@/Components/TextInput";
+import NumberInput from "@/Components/NumberInput";
+import TextArea from "@/Components/TextArea";
+import SelectInput from "@/Components/SelectInput";
+import Button from "@/Components/Button";
 
 export default function RoomCreate() {
     const { data, setData, post, errors, processing, progress } = useForm({
@@ -13,7 +13,7 @@ export default function RoomCreate() {
         price: "",
         availability_status: "",
         room_description: "",
-        files: []
+        files: [],
     });
 
     const handleFilesChange = (e) => {
@@ -36,19 +36,23 @@ export default function RoomCreate() {
             formData.append(`images[]`, file);
         });
 
-        post('/rooms', formData);
+        post("/rooms", formData);
     }
 
     const availabilityOptions = [
-        { value: 'available', label: 'Available' },
-        { value: 'unavailable', label: 'Unavailable' }
+        { value: "available", label: "Available" },
+        { value: "unavailable", label: "Unavailable" },
     ];
 
     return (
         <>
             <h1 className="mb-6 text-2xl font-bold">Create Room</h1>
             <div className="flex justify-center">
-                <form onSubmit={submit} className="w-full max-w-lg space-y-4" encType="multipart/form-data">
+                <form
+                    onSubmit={submit}
+                    className="w-full max-w-lg space-y-4"
+                    encType="multipart/form-data"
+                >
                     <TextInput
                         id="room_type"
                         label="Room Type"
@@ -85,7 +89,9 @@ export default function RoomCreate() {
                         id="availability_status"
                         label="Availability Status"
                         value={data.availability_status}
-                        onChange={(e) => setData("availability_status", e.target.value)}
+                        onChange={(e) =>
+                            setData("availability_status", e.target.value)
+                        }
                         error={errors.availability_status}
                         options={availabilityOptions}
                     />
@@ -94,12 +100,19 @@ export default function RoomCreate() {
                         id="room_description"
                         label="Room Description"
                         value={data.room_description}
-                        onChange={(e) => setData("room_description", e.target.value)}
+                        onChange={(e) =>
+                            setData("room_description", e.target.value)
+                        }
                         error={errors.room_description}
                     />
 
                     <div>
-                        <label htmlFor="room_images" className="block font-medium text-gray-700">Room Images</label>
+                        <label
+                            htmlFor="room_images"
+                            className="block font-medium text-gray-700"
+                        >
+                            Room Images
+                        </label>
                         <input
                             type="file"
                             id="room_images"
@@ -109,12 +122,17 @@ export default function RoomCreate() {
                             onChange={handleFilesChange}
                             className="block w-full mt-1"
                         />
-                        {errors.files && <span className="text-red-600">{errors.files}</span>}
+                        {errors.files && (
+                            <span className="text-red-600">{errors.files}</span>
+                        )}
                     </div>
 
                     {progress && (
                         <div className="w-full bg-gray-200 rounded h-2.5">
-                            <div className="bg-blue-600 h-2.5 rounded" style={{ width: `${progress.percentage}%` }}></div>
+                            <div
+                                className="bg-blue-600 h-2.5 rounded"
+                                style={{ width: `${progress.percentage}%` }}
+                            ></div>
                         </div>
                     )}
 

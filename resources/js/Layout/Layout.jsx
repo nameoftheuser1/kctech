@@ -16,7 +16,7 @@ export default function Layout({ children }) {
                         </li>
                         <li>
                             <Link
-                                href="/room"
+                                href="/rooms"
                                 className="text-blue-600 transition duration-300 hover:text-blue-800"
                             >
                                 Rooms

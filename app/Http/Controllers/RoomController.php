@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class RoomController extends Controller
 {
@@ -69,7 +71,6 @@ class RoomController extends Controller
                         'room_id' => $room->id,
                         'image_path' => $path,
                     ]);
-                    Log::info('Created RoomImage:', $roomImage->toArray());
                 } catch (\Exception $e) {
                     Log::error('Error storing image: ' . $e->getMessage());
                 }
@@ -78,7 +79,7 @@ class RoomController extends Controller
             Log::info('No images found in request');
         }
 
-        return redirect('/room')->with('success', 'Successfully added the room with images.');
+        return redirect('/rooms')->with('success', 'Successfully added the room.');
     }
 
     /**
@@ -86,8 +87,10 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
+        $room->load('roomImages');
+        return inertia('Admin/Rooms/RoomShow', ['room' => $room]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -110,6 +113,30 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        try {
+            DB::beginTransaction();
+
+            $roomImages = $room->roomImages()->get();
+
+            foreach ($roomImages as $image) {
+                try {
+                    if (Storage::disk('public')->exists($image->image_path)) {
+                        Storage::disk('public')->delete($image->image_path);
+                    }
+                    $image->delete();
+                } catch (\Exception $e) {
+                    Log::error("Failed to delete image {$image->id}: " . $e->getMessage());
+                }
+            }
+
+            $room->delete();
+
+            DB::commit();
+            return redirect('/rooms')->with('deleted', 'The room and its images have been deleted.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Failed to delete room {$room->id}: " . $e->getMessage());
+            return redirect('/rooms')->with('error', 'Failed to delete the room. Please try again.');
+        }
     }
 }
