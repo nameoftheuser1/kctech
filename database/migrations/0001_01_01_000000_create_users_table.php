@@ -11,12 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Creating users table with role, phone_number, and verified_by_admin fields
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'staff', 'customer'])->default('customer');
+            $table->string('phone_number')->nullable();
+            $table->boolean('verified_by_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

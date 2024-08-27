@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/room', RoomController::class);
+Route::resource('/rooms', RoomController::class);
