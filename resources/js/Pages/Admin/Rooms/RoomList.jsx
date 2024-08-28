@@ -1,5 +1,6 @@
 import { useState } from "react";
 import RoomCard from "@/Components/RoomCard";
+import Pagination from "../../../Components/Pagination";
 
 export default function RoomList({ rooms, search }) {
     const [searchInput, setSearchInput] = useState(search || "");
@@ -29,7 +30,7 @@ export default function RoomList({ rooms, search }) {
                 </button>
             </form>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 h-[60svh]">
                 {rooms.data.length > 0 ? (
                     rooms.data.map((room) => (
                         <RoomCard key={room.id} room={room} />
@@ -39,20 +40,7 @@ export default function RoomList({ rooms, search }) {
                 )}
             </div>
 
-            <div className="mt-4">
-                {rooms.links.map((link) => (
-                    <button
-                        key={link.label}
-                        disabled={!link.url}
-                        onClick={() => Inertia.get(link.url)}
-                        className={`p-2 border rounded mx-1 ${
-                            link.active ? "bg-blue-500 text-white" : ""
-                        }`}
-                    >
-                        {link.label.replace(/&laquo;|&raquo;/g, "")}
-                    </button>
-                ))}
-            </div>
+            <Pagination links={rooms.links} />
         </>
     );
 }

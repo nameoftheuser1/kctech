@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Models\RoomImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class RoomController extends Controller
 {
@@ -40,6 +43,8 @@ class RoomController extends Controller
      */
     public function create()
     {
+
+        Gate::authorize('admin');
         return inertia('Admin/Rooms/RoomCreate');
     }
 

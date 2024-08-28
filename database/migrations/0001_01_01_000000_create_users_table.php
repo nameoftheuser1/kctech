@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Creating users table with role, phone_number, and verified_by_admin fields
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');

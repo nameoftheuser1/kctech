@@ -5,8 +5,11 @@ export default {
         "./resources/**/*.jsx",
     ],
     theme: {
-        extend: {},
+        extend: {
+            backgroundImage: {
+                'home': "url('/assets/img/edit.jpg')",
+            }
+        },
     },
     plugins: [],
 }
-
