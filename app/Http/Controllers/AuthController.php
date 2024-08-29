@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    public function Register(Request $request)
+    public function register(Request $request)
     {
         $fields = $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -19,9 +20,31 @@ class AuthController extends Controller
 
         $user = User::create($fields);
 
-        dd('not done: ok');
+        return inertia('Customer/ProfileHome');
+    }
 
-        //preparing for homepage
+    public function login(Request $request)
+    {
+        $rules = [
+            'email' => ['required', 'max:255'],
+            'password' => ['required'],
+        ];
+
+        if ($request->email !== 'admin') {
+            $rules['email'][] = 'email';
+        }
+
+        $fields = $request->validate($rules);
+
+        if (Auth::attempt($fields, $request->remember)) {
+            return redirect()->intended('/');
+        } else {
+            return Inertia::render('Auth/Login', [
+                'errors' => [
+                    'failed' => 'The provided credentials do not match our records.'
+                ]
+            ]);
+        }
     }
 
     public function logout(Request $request)
@@ -31,7 +54,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        dd('not done: ok');
-        // return redirect('/login');
+        return inertia('/login');
     }
 }

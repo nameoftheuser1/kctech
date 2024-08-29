@@ -21,6 +21,6 @@ class AdminMiddleware
             return $next($request);
         }
 
-        return redirect('/');
+        return Inertia::location('/');
     }
 }

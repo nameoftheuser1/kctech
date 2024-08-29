@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -38,6 +40,17 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        DB::table('users')->insert([
+            'name' => 'Admin User',
+            'email' => 'admin',
+            'password' => Hash::make('admin'),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+            'verified_by_admin' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     /**

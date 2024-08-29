@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import TextInput from "@/Components/TextInput";
 import EmailInput from "@/Components/EmailInput";
 import NumberInput from "@/Components/NumberInput";
@@ -79,6 +79,10 @@ export default function Register() {
                             text="Create Account"
                             className="w-full"
                         />
+                    </div>
+
+                    <div className="mt-6">
+                        <Link className="text-[13px]" href="/login" >Already have account? <span className="text-blue-500 underline">Login here</span></Link>
                     </div>
                 </div>
             </div>

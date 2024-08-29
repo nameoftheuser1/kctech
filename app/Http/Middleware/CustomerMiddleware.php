@@ -21,6 +21,6 @@ class CustomerMiddleware
             return $next($request);
         }
 
-        return Inertia::location('/');
+        return Inertia::location('/login');
     }
 }

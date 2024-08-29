@@ -10,7 +10,7 @@ const Pagination = ({ links }) => {
                 href={previousLink?.url || "#"}
                 className={`p-2 border rounded mx-1 ${
                     !previousLink?.url
-                        ? "cursor-not-allowed opacity-50"
+                        ? "hidden opacity-50"
                         : "hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={!previousLink?.url}
@@ -32,7 +32,7 @@ const Pagination = ({ links }) => {
                             link.active
                                 ? "bg-blue-500 text-white"
                                 : "hover:bg-blue-500 hover:text-white"
-                        } ${!link.url ? "cursor-not-allowed opacity-50" : ""}`}
+                        } ${!link.url ? "opacity-50" : ""}`}
                         disabled={!link.url}
                     >
                         {link.label}
@@ -43,7 +43,7 @@ const Pagination = ({ links }) => {
                 href={nextLink?.url || "#"}
                 className={`p-2 border rounded mx-1 ${
                     !nextLink?.url
-                        ? "cursor-not-allowed opacity-50"
+                        ? "hidden opacity-50"
                         : "hover:bg-blue-500 hover:text-white"
                 }`}
                 disabled={!nextLink?.url}
